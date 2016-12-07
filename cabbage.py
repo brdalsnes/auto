@@ -10,6 +10,7 @@ from std_msgs.msg import String
 waypoint1 = (0, 10) #Example coords
 waypoint2 = (20, 30)
 
+waypoints = {'wp1' : (0,0), 'wp2' : (0,0), 'wp3' : (0,0), 'wp4' : (0,0)}
 def talker():
     rospy.init_node('talker', anonymous=True)
 

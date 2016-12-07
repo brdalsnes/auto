@@ -2,14 +2,10 @@
 	(problem boxes_problem)
 	(:domain boxes_domain)
 	(:objects 
-
-		waypoint1 waypoint2 - waypoint
 		rob - robot
 	)
 	
 	(:init
-
-		(atrobot waypoint2)
 		(red red_box)
 		(green green_box)
 		(grey grey_box)	
