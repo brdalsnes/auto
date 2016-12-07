@@ -22,6 +22,7 @@
 	(:action move_empty
 		:parameters (?from ?to - waypoint)
 		:precondition (and(or(not(at green_box ?from))(not(at grey_box ?from)))(or(not(at red_box ?from))(not(at grey_box ?from)))(atrobot ?from) 
+(not(intrans green_box))(not(intrans red_box))(not(intrans grey_box)))
 		:effect (and(atrobot ?to)(not(atrobot ?from)))
 	)
 	
@@ -35,6 +36,7 @@
 	(:action pick
 		:parameters (?what - box ?from - waypoint)
 		:precondition (and (at ?what ?from)(atrobot ?from)
+(not(intrans green_box))(not(intrans red_box))(not(intrans grey_box)))
 		:effect (and 
 		
 				(when(and(green ?what)(or(not(at red_box ?from))(not(at grey_box ?from))))

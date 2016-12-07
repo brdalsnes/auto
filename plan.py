@@ -1,10 +1,14 @@
 import os
 import rospy
 import fileinput
+import time
 from get_speech import get_speech
+from cabbage2 import *
+from get_speech import *
 
 FILE_PROBLEM = "template2_problem.pddl"
 FILE_DOMAIN = "template2_domain.pddl"
+robot_placement = ""
 
 def reset_files():
 	f = open("problem_start.pddl", 'r')
@@ -19,19 +23,6 @@ def reset_files():
 	f = open(FILE_DOMAIN, 'w')
 	f.write(text)
 	f.close()
-
-def contains(accepted, string):
-	for i in range(0, len(accepted)):
-		if accepted[i] in string:
-			return i
-	return -1
-
-def answer(question, accepted):
-	ans = raw_input(question)
-	while ans not in accepted:
-		os.system("mpg123 waypoints.mp3") #Change
-		ans = raw_input(question)
-	return ans
 
 
 def place_in_file(file_name, location, new_text):
@@ -106,7 +97,9 @@ def make_plan():
 
 	#Waypoints
 	os.system("mpg123 waypoints.mp3")
-	ans = answer("How many? ", ['2', '3', '4']) #Ex of accepted inputs
+	ans = raw_input("How many? ")
+	#ans = answer(['2', '3', '4']) #This format for speech instead of raw_input
+	#Also have to convert 2 -> two somewhere
 	place_in_file(FILE_PROBLEM, "(:objects", generate_waypoints(ans))
 
 
@@ -181,6 +174,17 @@ def make_plan():
 	place_in_file(FILE_PROBLEM, "(and", generate_black_position(ans_list))
 
 	#Create plan
+	os.system("mpg123 generating_plan.mp3")
 	os.system("./plan " + FILE_DOMAIN + " " + FILE_PROBLEM + "output.pddl")
+	time.sleep(10) #This isn't cheating, is it?
+	os.system("mpg123 plan_complete.mp3") #Add something about picking best plan etc?
+	time.sleep(1)
+
+if __name__ == '__main__':
+    try:
+        make_plan()
+        execute("waypoint" + robot_placement)
+    except rospy.ROSInterruptException:
+        pass
 
 
